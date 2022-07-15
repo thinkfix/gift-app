@@ -1,6 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import {FlatList, SafeAreaView, StyleSheet, Text, View, Linking, Pressable, Alert, Modal} from 'react-native';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Linking,
+  Pressable,
+  Alert,
+  Modal,
+  ListRenderItem,
+} from 'react-native';
 
 const CURRENCY = 'UAH';
 
@@ -8,33 +19,42 @@ const wishlistData = [
   {
     name: 'T-shirt',
     url: 'https://7mntns.com/man/t-shirt/4362/',
-    price: '440'
+    price: 440,
   },
   {
     name: 'Book',
     url: 'https://7mntns.com/man/t-shirt/4362/',
-    price: '120'
+    price: 120,
   },
   {
     name: 'Refrigerator',
     url: 'https://7mntns.com/man/t-shirt/4362/',
-    price: '12000'
-  }
+    price: 12000,
+  },
 ];
-
-const Item = ({ name, price, url }) => (
+type IItem = {
+  name: string;
+  url: string;
+  price: number;
+};
+function Item({ name, price, url }: IItem) {
+  return (
     <View style={styles.item}>
       <Pressable onPress={() => Linking.openURL(url)}>
         <Text style={styles.name}>{name}</Text>
-        <Text>{price} {CURRENCY}</Text>
+        <Text>
+          {price} {CURRENCY}
+        </Text>
       </Pressable>
     </View>
-);
+  );
+}
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const renderItem = ({ item }) => (
-      <Item name={item.name} price={item.price} url={item.url}/>
+
+  const renderItem: ListRenderItem<IItem> = ({ item }) => (
+    <Item name={item.name} price={item.price} url={item.url} />
   );
   return (
     <SafeAreaView style={styles.container}>
@@ -47,24 +67,22 @@ export default function App() {
         </Pressable>
       </View>
       <View style={styles.listContainer}>
-        <FlatList data={wishlistData} renderItem={renderItem}/>
+        <FlatList data={wishlistData} renderItem={renderItem} />
       </View>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <View style={styles.centeredView}>
         <Modal
-            animationType="slide"
-            transparent={false}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
+          animationType="slide"
+          transparent={false}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}
         >
           <View style={styles.centeredView}>
             <Text>Modal content</Text>
-            <Pressable
-                onPress={() => setModalVisible(!modalVisible)}
-            >
+            <Pressable onPress={() => setModalVisible(!modalVisible)}>
               <Text>Hide Modal</Text>
             </Pressable>
           </View>
@@ -77,9 +95,9 @@ export default function App() {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
   container: {
     flex: 1,
@@ -87,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   listContainer: {
-    flex: 1
+    flex: 1,
   },
   item: {
     backgroundColor: '#f9c2ff',
@@ -101,17 +119,17 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     paddingHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "space-between"
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   addButton: {
     backgroundColor: '#f00',
     borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 5
+    paddingVertical: 5,
   },
   addButtonText: {
     color: '#fff',
-    fontWeight: "700"
-  }
+    fontWeight: '700',
+  },
 });
